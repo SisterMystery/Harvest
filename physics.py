@@ -34,4 +34,4 @@ def forceTest(count,frames,mass,vector):
 	if count in frames:
 		physics.applyForce(mass,vector)
 
-Gravity = vector2d(0,.980665) # pixel/second^2 = centimeter/second^2		
+Gravity = vector2d(0,.180665) # pixel/second^2 = centimeter/second^2		

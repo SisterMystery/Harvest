@@ -43,7 +43,7 @@ class blobPoint(object):
 	def accelerate(self):
 	# In this world there are very few forces: here we check and apply them all to this blobPoint
 		# accelerate for particle attraction
-		#physics.applyForce(self,physics.Gravity)
+		physics.applyForce(self,physics.Gravity)
 		# accelerate for solid?/liquid/air resistance
 		#if not self.controlpt: 
 		#	dragVect = self.velocity.multiply(-.2)
@@ -54,17 +54,17 @@ class blobPoint(object):
 		 #accelerate for other forces?   			
 	def update(self):
 		if self.position.x > width:
-			self.position.x = width -1
-			self.velocity = self.velocity.reverse()	
-		if self.position.x < 0:
-			self.position.x = 1
-			self.velocity = self.velocity.reverse()	
-		if self.position.y > height:
-			self.position.y = height-1
-			self.velocity = self.velocity.reverse()	
-		if self.position.y < 0:
-			self.position.y = 1
-			self.velocity = self.velocity.reverse()	
+			self.position.x -= 1 + abs(self.position.x - width)
+			self.velocity = self.velocity.multiply(.5).reverse()	
+		if self.position.x < 2:
+			self.position.x += abs(self.position.x)
+			self.velocity = self.velocity.multiply(.5).reverse() 
+		if self.position.y > height -50:
+			self.position.y -= 51 + abs(self.position.y - height )
+			self.velocity = self.velocity.multiply(.5).reverse() 	
+		if self.position.y < 1:
+			self.position.y = 10
+			self.velocity = self.velocity.multiply(.5).reverse() 
 		
 		self.position = self.position.add(self.velocity)
 		self.accelerate()
@@ -82,6 +82,7 @@ class controlPoint(blobPoint):
 		self.kind = "controlPoint" 
 		#DO THIS GODDAM THING!!!!
 	def accelerate(self):
+			physics.applyForce(self,physics.Gravity)
 			for point in self.parts:#.controls:
 				
 				dist = math.sqrt(math.pow(self.position.x-point.position.x,2)+math.pow(self.position.y-point.position.y,2))

@@ -71,11 +71,12 @@ def main():
 		#	forceTest(frameCount,[3],particles[i],physics.vector2d(-5,0))
 		#	forceTest(frameCount,[10],particles[i],physics.vector2d(0,-7))
 		#	forceTest(frameCount,[15],particles[i],physics.vector2d(10,-8))
+		
 		for i in range(len(particles)):	
-			if particles[i].position.y >= 490 or particles[i].position.y <= 10:
-				particles[i].velocity.y *=-.9
-			if particles[i].position.x >= 715 or particles[i].position.x <= 10:
-				particles[i].velocity.x *=-.9	
+		#	if particles[i].position.y >= 490 or particles[i].position.y <= 10:
+		#		particles[i].velocity.y *=-.5
+		#	if particles[i].position.x >= 715 or particles[i].position.x <= 10:
+		#		particles[i].velocity.x *=-.5	
 				#particles[i].velocity.reverse(y)
 				#forceTest(0,[0],particles[i],physics.vector2d(0,-9)) 
 			particles[i].bump(nonControl)
