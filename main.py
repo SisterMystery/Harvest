@@ -19,6 +19,8 @@ def main():
 	newpt = darking.controlPoint(395,150,particles)	
 	particles.append(cntrlpt)
 	particles.append(newpt)	
+	cntrlpt.parts = particles
+	newpt.parts = particles
 	controlPoints.append(cntrlpt)
 	controlPoints.append(newpt)
 	cntrlpt.controls.append(newpt)
@@ -29,7 +31,7 @@ def main():
 	#cPoint = darking.blobPoint(200,230)
 	#cPoint.setControl(particles)
 	#particles.append(cPoint)
-	mvspd = 2
+	mvspd = 4
 	pygame.key.set_repeat()
 	pygame.key.set_repeat(1,5)
 	while 1:
@@ -46,16 +48,16 @@ def main():
 					if currentP >= len(controlPoints): currentP = 0
             		if pygame.key.get_pressed()[pygame.K_RIGHT]:
 					controlPoints[currentP].position.x+= mvspd
-					#physics.applyForce(i,physics.vector2d(20,0))	
+					#physics.applyForce(controlPoints[currentP],physics.vector2d(5,0))
             		if pygame.key.get_pressed()[pygame.K_LEFT]:
                                         controlPoints[currentP].position.x-=mvspd
-					#physics.applyForce(i,physics.vector2d(-20,0))
+					#physics.applyForce(controlPoints[currentP],physics.vector2d(-5,0))
             		if pygame.key.get_pressed()[pygame.K_UP]:
 					controlPoints[currentP].position.y-=mvspd
-					#physics.applyForce(i,physics.vector2d(0,-20))
+					#physics.applyForce(controlPoints[currentP],physics.vector2d(0,-5))
             		if pygame.key.get_pressed()[pygame.K_DOWN]:
 					controlPoints[currentP].position.y+=mvspd
-					#physics.applyForce(i,physics.vector2d(0,20))
+					#physics.applyForce(controlPoints[currentP],physics.vector2d(0,5))
 			if pygame.key.get_pressed()[pygame.K_w]:
 					controlPoints[currentQ].position.y-= mvspd
 			if pygame.key.get_pressed()[pygame.K_a]:

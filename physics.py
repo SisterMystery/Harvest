@@ -17,6 +17,7 @@ class vector2d(object):
 	def unitize(self):
 		one = abs(float(self.x)) + abs(float(self.y))
 		if one == 0: return(vector2d(0,0))
+		self.velocity = vector2d(self.x/one,self.y/one)
 		return vector2d(self.x/one,self.y/one)
 	
 	def multiply(self,num):

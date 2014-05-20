@@ -9,7 +9,7 @@ white = (255,255,255)
 pygame.init()
 pygame.font.init()
 speed = [1,1]
-background  = pygame.image.load("images/backGround1.bmp")
+background  = pygame.image.load("images/trees.bmp")
 
 backgroundRect = background.get_rect()
 size = (width, height) =background.get_size() 
