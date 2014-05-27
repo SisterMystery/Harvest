@@ -1,5 +1,5 @@
 int lightIn = A3;
-byte b;
+int b;
 
 void setup(){
   Serial.begin(9600);

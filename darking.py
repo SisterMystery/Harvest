@@ -1,21 +1,43 @@
-import pygame,random, physics, harvest_screen, math
+import pygame,random, physics, harvest_screen, math, darkSerial, threading
 from harvest_screen import *
 
 mvspd = 4
 		
+
+class movThread(threading.Thread):
+	daemon = True
+	def __init__(self, blob):
+		threading.Thread.__init__(self)
+		self.blob = blob
+
+	def run(self):
+			movlist = darkSerial.getInputList(darkSerial.DarkSerial)
+                        if movlist[0]: self.position.x -= mvspd
+                        if movlist[1]: self.position.y -= mvspd
+                        if movlist[2]: self.position.x += mvspd
+                        if movlist[3]: self.position.x -= mvspd
+                        if movlist[4]:
+                                self.position.x -= mvspd/2
+                                self.position.y -= mvspd/2
+                        if movlist[5]: self.position.y -= mvspd
+                        if movlist[6]:
+                                self.position.x += mvspd/2
+                                self.position.y -= mvspd/2
+                        if movlist[7]: self.position.x += mvspd
+
 
 class blobPoint(object):
 	def __init__(self,x,y):
 		self.kind = "blobPoint"
 		# add itself to the Things-with-mass list? 
 		#get black pixel image and its 1x1 rectangle
-		self.image = pygame.image.load("images/blackPixelg.bmp")
+		self.image = pygame.image.load("images/blackPixel3.bmp")
 		self.rect = self.image.get_rect().inflate(5,5)
 		self.position = physics.vector2d(x,y)
 		self.velocity = physics.vector2d(0,0) #x,y velocities (pixels per tick)
 		#self.acceleration = physics.vector2d(0,0)  # x,y accelerations
 	 	self.temperature = 20 # maybe irrelevant? maybe super important? 
-
+		
 
 	def bump(self,ptlist):
 		for point in ptlist:
@@ -71,6 +93,22 @@ class controlPoint(blobPoint):
                          	one = self.velocity.unitize()
                           	self.velocity = one.multiply(5)
 			physics.applyForce(self,physics.Gravity)
+			
+			
+			
+			movlist = darkSerial.getInputList(darkSerial.DarkSerial)
+			if movlist[0]: self.position.x -= mvspd
+			if movlist[1]: self.position.y -= mvspd
+			if movlist[2]: self.position.x += mvspd
+			if movlist[3]: self.position.x -= mvspd
+			if movlist[4]: 
+				self.position.x -= movspd/2
+				self.position.y -= movspd/2
+			if movlist[5]: self.position.y -= mvspd
+			if movlist[6]: 
+				self.position.x += movspd/2
+				self.position.y -= movspd/2
+			if movlist[7]: self.position.x += mvspd
 
 			for point in self.parts:#.controls:
 				
