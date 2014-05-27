@@ -12,12 +12,15 @@ except Exception as e1:
 		sys.exit()
 
 DarkSerial.timeout = .01
-
+DarkSerial.baudrate = 9600
 def getInputList(port):
-	
+	port.flushInput()
 	byte = port.readline()
 	if not byte: byte = 0
-	byte = int(byte)
+	try:
+		byte = int(byte)
+	except:
+		byte = 0
 	inlist = []
 	for i in range(8):
 		if pow(2,i) & byte:
@@ -30,4 +33,5 @@ def getInputList(port):
 
 
 
-
+#while(1):	
+#	getInputList(DarkSerial)

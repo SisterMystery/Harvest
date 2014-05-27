@@ -1,9 +1,9 @@
-import pygame,random, physics, harvest_screen, math, darkSerial, threading
+import pygame,random, physics, harvest_screen, math, darkSerial, threading, time
 from harvest_screen import *
 
-mvspd = 4
+mvspd = 7
 		
-
+"""
 class movThread(threading.Thread):
 	daemon = True
 	def __init__(self, blob):
@@ -11,21 +11,9 @@ class movThread(threading.Thread):
 		self.blob = blob
 
 	def run(self):
-			movlist = darkSerial.getInputList(darkSerial.DarkSerial)
-                        if movlist[0]: self.position.x -= mvspd
-                        if movlist[1]: self.position.y -= mvspd
-                        if movlist[2]: self.position.x += mvspd
-                        if movlist[3]: self.position.x -= mvspd
-                        if movlist[4]:
-                                self.position.x -= mvspd/2
-                                self.position.y -= mvspd/2
-                        if movlist[5]: self.position.y -= mvspd
-                        if movlist[6]:
-                                self.position.x += mvspd/2
-                                self.position.y -= mvspd/2
-                        if movlist[7]: self.position.x += mvspd
-
-
+		darkSerial.DarkSerial.flushInput()
+		time.sleep(1000)
+"""
 class blobPoint(object):
 	def __init__(self,x,y):
 		self.kind = "blobPoint"
@@ -73,7 +61,6 @@ class blobPoint(object):
 			self.velocity.x *= .5
 	
 		self.position = self.position.add(self.velocity)
-		self.accelerate()
 	
 	def blit(self):
 		self.rect.center = self.position.coords
@@ -86,8 +73,14 @@ class controlPoint(blobPoint):
 		self.controls = []
 		self.image = pygame.image.load("images/redPixel.bmp")
 		self.kind = "controlPoint" 
+
+	def leash(self,point):
+		 dist = math.sqrt(math.pow(self.position.x-point.position.x,2)+math.pow(self.position.y-point.position.y,2))
+		 vect = physics.vector2d(self.position.x-point.position.x,self.position.y-point.position.y).unitize()
+		 if dist > 50:
+			self.position = self.position.add(vect.multiply(-mvspd))
 	
-	def accelerate(self):
+	def accelerate(self, movlist):
 			self.velocity = self.velocity.multiply(.95) #drag? 
                   	if abs(self.velocity.x + self.velocity.y) > 5: #maximum speed?
                          	one = self.velocity.unitize()
@@ -96,18 +89,17 @@ class controlPoint(blobPoint):
 			
 			
 			
-			movlist = darkSerial.getInputList(darkSerial.DarkSerial)
 			if movlist[0]: self.position.x -= mvspd
 			if movlist[1]: self.position.y -= mvspd
 			if movlist[2]: self.position.x += mvspd
 			if movlist[3]: self.position.x -= mvspd
 			if movlist[4]: 
-				self.position.x -= movspd/2
-				self.position.y -= movspd/2
+				self.position.x -= mvspd/2
+				self.position.y -= mvspd/2
 			if movlist[5]: self.position.y -= mvspd
 			if movlist[6]: 
-				self.position.x += movspd/2
-				self.position.y -= movspd/2
+				self.position.x += mvspd/2
+				self.position.y -= mvspd/2
 			if movlist[7]: self.position.x += mvspd
 
 			for point in self.parts:#.controls:
@@ -136,14 +128,9 @@ class controlPoint(blobPoint):
 					physics.applyForce(point,vect.reverse().multiply(3))
 					#point.velocity = vect.multiply(-4)
 						
-				#if point.kind == "controlPoint" and dist > 60 :
-				#	vect = physics.vector2d(self.position.x-point.position.x,self.position.y-point.position.y).unitize()
-				#	self.position = self.position.add(vect)
 								
 									
 
 		
-	def bump(self,ptList):
-		return 0
 
 		
