@@ -1,12 +1,15 @@
 import pygame,random, physics, harvest_screen, math
 from harvest_screen import *
 
+mvspd = 4
+		
+
 class blobPoint(object):
 	def __init__(self,x,y):
 		self.kind = "blobPoint"
 		# add itself to the Things-with-mass list? 
 		#get black pixel image and its 1x1 rectangle
-		self.image = pygame.image.load("images/blackPixel.bmp")
+		self.image = pygame.image.load("images/blackPixelg.bmp")
 		self.rect = self.image.get_rect().inflate(5,5)
 		self.position = physics.vector2d(x,y)
 		self.velocity = physics.vector2d(0,0) #x,y velocities (pixels per tick)
@@ -21,25 +24,6 @@ class blobPoint(object):
 				vect = physics.vector2d(self.position.x-point.position.x,self.position.y-point.position.y).unitize()
 				physics.applyForce(self,vect.multiply(1))
 				break
-	"""			
-	def bump(self,ptList):
-		
-		bumps = self.rect.collidelistall(ptList)
-		
-		#if bumps:
-		#	self.velocity = self.velocity.multiply(.7).reverse()
-
-		
-		x = self.velocity.x
-		y = self.velocity.y
-		for i in bumps:
-			x += ptList[i].velocity.x
-			y += ptList[i].velocity.y
-			x /= len(ptList)
-			y /= len(ptList)
-			
-			self.velocity = physics.vector2d(x,y)
-	"""	
 	def accelerate(self):
 	# In this world there are very few forces: here we check and apply them all to this blobPoint
 		# accelerate for particle attraction
@@ -80,7 +64,7 @@ class controlPoint(blobPoint):
 		self.controls = []
 		self.image = pygame.image.load("images/redPixel.bmp")
 		self.kind = "controlPoint" 
-		#DO THIS GODDAM THING!!!!
+	
 	def accelerate(self):
 			self.velocity = self.velocity.multiply(.95) #drag? 
                   	if abs(self.velocity.x + self.velocity.y) > 5: #maximum speed?
@@ -97,8 +81,8 @@ class controlPoint(blobPoint):
 				if dist > 23 and newdist > 23  and point.kind == "blobPoint" : #and newdist >  50:
 					#point.velocity = point.velocity.multiply(.5)
 					if dist + newdist > 120:
-						vect = vect.divide(math.pow(dist,1.001))
-						physics.applyForce(point,vect.multiply(70))
+						vect = vect.divide(math.pow(dist,1.1))
+						physics.applyForce(point,vect.multiply(110))
 					else:
 						physics.applyForce(point,vect.multiply(3))
 					#point.velocity = vect.multiply(5)
@@ -114,14 +98,14 @@ class controlPoint(blobPoint):
 					physics.applyForce(point,vect.reverse().multiply(3))
 					#point.velocity = vect.multiply(-4)
 						
-				if point.kind == "controlPoint" and dist > 60 :
-					self.position = self.position.add(vect)
+				#if point.kind == "controlPoint" and dist > 60 :
+				#	vect = physics.vector2d(self.position.x-point.position.x,self.position.y-point.position.y).unitize()
+				#	self.position = self.position.add(vect)
 								
-					
+									
 
+		
 	def bump(self,ptList):
-		#i = self.rect.collidelist(ptList)
-		#ptList[i].velocity = ptList[i].velocity.multiply(.8).reverse()	
 		return 0
 
 		

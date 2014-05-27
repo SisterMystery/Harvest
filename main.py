@@ -1,20 +1,22 @@
-import pygame, sys, darking, harvest_screen, physics
+import pygame, sys, darking, harvest_screen, physics, random
 from harvest_screen import *
 
+particles = []
+controlPoints = []
+nonControl = []
+frameCount = 0
+def addPts(origin,x,y):
+	for x in range(x):
+		for y in range(y):
+			pt = darking.blobPoint(origin[0]-5*x,origin[1]+5*y)
+			nonControl.append(pt)
+			particles.append(pt)
 
 
-## better fix all this to work with  the new objects
 def main():
 	frameCount = 0
 	clock = pygame.time.Clock()
-	particles = []
-	controlPoints = []
-	nonControl = []
-	for x in range(10):
-		for y in range(20):
-			pt = darking.blobPoint(525-5*x,100+5*y)
-			nonControl.append(pt)
-			particles.append(pt)
+	addPts([500,100],10,20)
 	cntrlpt = darking.controlPoint(495,150,particles)
 	newpt = darking.controlPoint(395,150,particles)	
 	particles.append(cntrlpt)
@@ -35,8 +37,9 @@ def main():
 	pygame.key.set_repeat()
 	pygame.key.set_repeat(1,5)
 	while 1:
-		#frameCount += 1 
-		#print frameCount
+		frameCount += 1 
+		print frameCount
+		#if frameCount%10 == 0: addPts([random.randint(0,600),20],1,1)
 		clock.tick(60)
 		for event in pygame.event.get():
             		if event.type == pygame.QUIT: sys.exit()
